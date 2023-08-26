@@ -120,5 +120,43 @@ namespace ContactsManagerTests
         }
 
         #endregion GetAllCountries
+
+        #region GetCountryByCountryID
+
+        //If we supply null as CountryID, it should return null as CountryResponse
+        [Fact]
+        public void GetCountryByCountryID_NullCountryID()
+        {
+            //Arrange
+            Guid? countryID = null;
+
+            //Act
+            CountryResponse? country_response_from_get_method =  _countriesService.GetCountryByCountryID(countryID);
+
+            //Assert
+            Assert.Null(country_response_from_get_method);
+        }
+
+
+        //If we supply a valid country id, it should return the matching country details as CountryResponse object
+        [Fact]
+        public void GetCountryByCountryID_ValidCountryID()
+        {
+            //Arrange
+            CountryAddRequest? country_add_request = new CountryAddRequest()
+            {
+                CountryName = "China"
+            };
+
+            CountryResponse? country_response_from_add = _countriesService.AddCountry(country_add_request);
+
+            //Act
+            CountryResponse? country_response_from_get = _countriesService.GetCountryByCountryID(country_response_from_add.CountryID);
+
+            //Assert
+            Assert.Equal(country_response_from_add, country_response_from_get);
+        }
+
+        #endregion
     }
 }
