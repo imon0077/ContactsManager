@@ -18,6 +18,7 @@ namespace ContactsManagerTests
             _countriesService = new CountriesService();
         }
 
+        #region AddCountry
         //When CountryAddRequest is null, it should throw ArgumentNullExeption
         [Fact]
         public void AddCountry_Nullcountry()
@@ -46,7 +47,6 @@ namespace ContactsManagerTests
             });
         }
 
-
         //When the CountryName is duplicate, it should throw ArgumentException
         [Fact]
         public void AddCountry_DuplicateCountryName()
@@ -72,10 +72,53 @@ namespace ContactsManagerTests
 
             //Act
             CountryResponse response = _countriesService.AddCountry(request);
+              List<CountryResponse> countries_from_GetAllCountries =  _countriesService.GetAllCountries();
 
             //Assert
             Assert.True(response.CountryID != Guid.Empty);
-           
+            Assert.Contains(response, countries_from_GetAllCountries);
         }
+        #endregion AddCountry
+
+        #region GetAllCountries
+
+        [Fact]
+        //List of countries should be empty by default (before adding any)
+        public void GetAllCountries_EmptyList()
+        {
+            //Acts
+            List<CountryResponse> actual_countries_response_list = _countriesService.GetAllCountries();
+
+            //Assert
+            Assert.Empty(actual_countries_response_list);
+        }
+
+        [Fact]
+        public void GetAllCountries_AddFewCountries()
+        {
+            //Arrange
+            List<CountryAddRequest> country_request_list = new List<CountryAddRequest>()
+            {
+                new CountryAddRequest() {CountryName = "USA"},
+                new CountryAddRequest(){CountryName = "UK"}
+            };
+
+            //Act
+            List<CountryResponse> countries_list_from_add_country = new List<CountryResponse>();
+            foreach (CountryAddRequest country_request in country_request_list)
+            {
+                countries_list_from_add_country.Add( _countriesService.AddCountry(country_request));
+            }
+
+            List<CountryResponse> actualcountryResponseList = _countriesService.GetAllCountries();
+
+            //read each element from countries_list_from_add_country
+            foreach(CountryResponse expected_country in countries_list_from_add_country)
+            {
+                Assert.Contains(expected_country, actualcountryResponseList);
+            }
+        }
+
+        #endregion GetAllCountries
     }
 }
