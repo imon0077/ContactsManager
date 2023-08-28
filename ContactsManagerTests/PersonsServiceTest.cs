@@ -8,10 +8,12 @@ namespace ContactsManagerTests
     public class PersonsServiceTest
     {
         private readonly IPersonsService _personsService;
+        private readonly ICountriesService _countriesService;
 
         public PersonsServiceTest()
         {
             _personsService = new PersonsService();
+            _countriesService = new CountriesService();
         }
 
         #region AddPerson
@@ -65,6 +67,51 @@ namespace ContactsManagerTests
             Assert.True(personResponse.PersonID != Guid.Empty);
 
             Assert.Contains(personResponse, person_list);
+        }
+
+        #endregion
+
+        #region GetPersonByPersonID
+
+        [Fact]
+        public void GetPersonByPersonID_NullPersonID()
+        {
+            //Arrange
+            Guid? PersonID = null;
+
+            //Act
+            PersonResponse? personResponse_from_get = _personsService.GetPersonByPersonID(PersonID);
+
+            //Assert
+            Assert.Null(personResponse_from_get);
+
+        }
+
+        [Fact]
+        public void GetPersonByPersonID_WithPersonID()
+        {
+            //Arrange
+            CountryAddRequest countryAddRequest = new CountryAddRequest() { CountryName = "Canada"};
+            CountryResponse countryResponse = _countriesService.AddCountry(countryAddRequest);
+
+            //Act
+            PersonAddRequest request = new()
+            {
+                PersonName = "Person name...",
+                Email = "person@email.com",
+                Address = "Sample Address ",
+                CountryID = countryResponse.CountryID,
+                Gender = GenderOptions.Male,
+                DateOfBirth = DateTime.Parse("2000-01-01"),
+                ReceiveNewsLetters = true
+            };
+
+            PersonResponse personResponse_from_add = _personsService.AddPerson(request);
+
+            PersonResponse? personResponse_from_get = _personsService.GetPersonByPersonID(personResponse_from_add.PersonID);
+
+            //Assert
+            Assert.Equal(personResponse_from_add, personResponse_from_get);
         }
 
         #endregion
