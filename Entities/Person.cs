@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Entities
+﻿namespace Entities
 {
     /// <summary>
     /// Person Domain model class
@@ -8,12 +6,7 @@ namespace Entities
     public class Person
     {
         public Guid PersonID { get; set; }
-
-        [Required(ErrorMessage = "Person name can't be empty.")]
         public string? PersonName { get; set; }
-
-        [Required(ErrorMessage = "Email can't be empty.")]
-        [EmailAddress(ErrorMessage = "Email should be valid format.")]
         public string? Email { get; set; }
         public string? Gender { get; set; }
         public DateTime? DateOfBirth { get; set; }
