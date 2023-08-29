@@ -91,7 +91,7 @@ namespace ContactsManagerTests
         public void GetPersonByPersonID_WithPersonID()
         {
             //Arrange
-            CountryAddRequest countryAddRequest = new CountryAddRequest() { CountryName = "Canada"};
+            CountryAddRequest countryAddRequest = new CountryAddRequest() { CountryName = "Canada" };
             CountryResponse countryResponse = _countriesService.AddCountry(countryAddRequest);
 
             //Act
@@ -115,5 +115,58 @@ namespace ContactsManagerTests
         }
 
         #endregion
+
+        #region GetAllPersons
+
+        //The GetAllPersons() should return an empty list by defualt
+        [Fact]
+        public void GetAllPersons_EmptyList()
+        {
+            //Act
+            List<PersonResponse> personResponses = _personsService.GetAllPersons();
+
+            //Assert
+            Assert.Empty(personResponses);
+        }
+
+        //First, when we add some persons, it should return all
+        [Fact]
+        public void GetAllPersons_AddPersons()
+        {
+            //Arrange
+            CountryAddRequest countryAddRequest1 = new CountryAddRequest() { CountryName = "USA" };
+            CountryAddRequest countryAddRequest2 = new CountryAddRequest() { CountryName = "Canada" };
+
+            CountryResponse countryResponse1 = _countriesService.AddCountry(countryAddRequest1);
+            CountryResponse countryResponse2 = _countriesService.AddCountry(countryAddRequest2);
+
+            PersonAddRequest personAddRequest1 = new PersonAddRequest() { PersonName = "Imon", Email = "imon@test.com", Address = "Ctg", CountryID = countryResponse1.CountryID, Gender = GenderOptions.Male, DateOfBirth = DateTime.Parse("1998-07-03"), ReceiveNewsLetters = true };
+
+            PersonAddRequest personAddRequest2 = new PersonAddRequest() { PersonName = "Mohsin", Email = "mohsin@test.com", Address = "Feni", CountryID = countryResponse1.CountryID, Gender = GenderOptions.Male, DateOfBirth = DateTime.Parse("1988-01-01"), ReceiveNewsLetters = true };
+
+            PersonAddRequest personAddRequest3 = new PersonAddRequest() { PersonName = "Smith", Email = "smith@test.com", Address = "CA", CountryID = countryResponse2.CountryID, Gender = GenderOptions.Female, DateOfBirth = DateTime.Parse("1990-02-09"), ReceiveNewsLetters = false };
+
+            List<PersonAddRequest> personAddRequests = new List<PersonAddRequest>() { personAddRequest1, personAddRequest2, personAddRequest3 };
+            List<PersonResponse> personResponses = new List<PersonResponse>();
+
+            foreach(PersonAddRequest request in personAddRequests)
+            {
+                PersonResponse personResponse = _personsService.AddPerson(request);
+                personResponses.Add(personResponse);
+            }
+
+            //Act
+            List<PersonResponse> persons_list_from_get = _personsService.GetAllPersons();
+
+            //Assert
+            foreach(PersonResponse person_response_from_add in personResponses)
+            {
+                Assert.Contains(person_response_from_add, persons_list_from_get);
+            }
+
+            #endregion
+
+
+        }
     }
 }
