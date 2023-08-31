@@ -2,6 +2,7 @@
 using ServiceContracts.DTO;
 using Services;
 using ServiceContracts.Enums;
+using Xunit.Abstractions;
 
 namespace ContactsManagerTests
 {
@@ -9,11 +10,13 @@ namespace ContactsManagerTests
     {
         private readonly IPersonsService _personsService;
         private readonly ICountriesService _countriesService;
+        private readonly ITestOutputHelper _testOutputHelper;
 
-        public PersonsServiceTest()
+        public PersonsServiceTest(ITestOutputHelper testOutputHelper)
         {
             _personsService = new PersonsService();
             _countriesService = new CountriesService();
+            _testOutputHelper = testOutputHelper;
         }
 
         #region AddPerson
@@ -155,16 +158,31 @@ namespace ContactsManagerTests
                 personResponses.Add(personResponse);
             }
 
+            //print personResponses using ItestOutputHelper
+            _testOutputHelper.WriteLine("Expected: ");
+            foreach (PersonResponse item in personResponses)
+            {
+                _testOutputHelper.WriteLine(item.ToString());
+            }
+
+
             //Act
             List<PersonResponse> persons_list_from_get = _personsService.GetAllPersons();
 
+            //print persons_list_from_get using ItestOutputHelper
+            _testOutputHelper.WriteLine("Actual: ");
+            foreach (PersonResponse item in persons_list_from_get)
+            {
+                _testOutputHelper.WriteLine(item.ToString());
+            }
+
             //Assert
-            foreach(PersonResponse person_response_from_add in personResponses)
+            foreach (PersonResponse person_response_from_add in personResponses)
             {
                 Assert.Contains(person_response_from_add, persons_list_from_get);
             }
 
-            #endregion
+            #endregion GetAllPersons
 
 
         }
