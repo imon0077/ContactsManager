@@ -186,7 +186,6 @@ namespace ContactsManagerTests
 
         #endregion GetAllPersons
 
-
         #region GetFilteredPersons
 
         //If search text is empty, its should return all persons
@@ -356,5 +355,81 @@ namespace ContactsManagerTests
 
         #endregion GetSortedPersons
 
+        #region UpdatePerson
+        //when we supply PersonUpdateRequest as null, then it should throw ArgumentNullException
+        [Fact]
+        public void UpdatePerson_NullPerson()
+        {
+            //Arrange
+            PersonUpdateRequest? personUpdateRequest = null;
+
+            //Act
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                _personsService.UpdatePerson(personUpdateRequest);
+            });            
+        }
+
+        //when we supply InvalidPersonID, then it should throw ArgumentException
+        [Fact]
+        public void UpdatePerson_InvalidPersonID()
+        {
+            //Arrange
+            PersonUpdateRequest personUpdateRequest = new PersonUpdateRequest() { PersonID = Guid.NewGuid() };
+
+            //Act
+            Assert.Throws<ArgumentException>(() => {
+                _personsService.UpdatePerson(personUpdateRequest);
+            });
+        }
+
+        //When we supply PersonName as null, then it should throw ArgumentException
+        [Fact]
+        public void UpdatePerson_PersonNameIsNull()
+        {
+            //Arrange
+            CountryAddRequest countryAddRequest = new CountryAddRequest() { CountryName = "UK" };
+            CountryResponse countryResponse = _countriesService.AddCountry(countryAddRequest);
+
+            PersonAddRequest personAddRequest = new PersonAddRequest() { PersonName = "John", CountryID = countryResponse.CountryID, Gender = GenderOptions.Male };
+
+            PersonResponse personResponse_from_add = _personsService.AddPerson(personAddRequest);
+
+            PersonUpdateRequest personUpdateRequest = personResponse_from_add.ToPersonUpdateRequest();
+            personUpdateRequest.PersonName = null;
+
+            //Assert
+            Assert.Throws<ArgumentException>(() => {
+                //Act
+                _personsService.UpdatePerson(personUpdateRequest);
+            });
+        }
+
+        //add a new person and try to update the person name & email
+        [Fact]
+        public void UpdatePerson_PersonFullDetailsUpdation()
+        {
+            //Arrange
+            CountryAddRequest countryAddRequest = new CountryAddRequest() { CountryName = "UK" };
+            CountryResponse countryResponse = _countriesService.AddCountry(countryAddRequest);
+
+            PersonAddRequest personAddRequest = new PersonAddRequest() { PersonName = "John", CountryID = countryResponse.CountryID, Gender = GenderOptions.Male, Address = "Abc road", DateOfBirth = DateTime.Parse("2000-01-04"), Email = "abc@email.com", ReceiveNewsLetters = true };
+
+            PersonResponse personResponse_from_add = _personsService.AddPerson(personAddRequest);
+
+            PersonUpdateRequest personUpdateRequest = personResponse_from_add.ToPersonUpdateRequest();
+            personUpdateRequest.PersonName = "Willium";
+            personUpdateRequest.Email = "willium@email.com";
+
+            //Act
+            PersonResponse personResponse_from_update = _personsService.UpdatePerson(personUpdateRequest);
+
+            PersonResponse? personResponse_from_get = _personsService.GetPersonByPersonID(personResponse_from_update.PersonID);
+
+            //Assert 
+            Assert.Equal(personResponse_from_get, personResponse_from_update);
+        }
+
+        #endregion UpdatePerson
     }
 }
