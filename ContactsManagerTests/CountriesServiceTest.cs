@@ -15,7 +15,7 @@ namespace ContactsManagerTests
 
         public CountriesServiceTest()
         {
-            _countriesService = new CountriesService();
+            _countriesService = new CountriesService(false);
         }
 
         #region AddCountry

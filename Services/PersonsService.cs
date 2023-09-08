@@ -12,10 +12,34 @@ namespace Services
         private readonly List<Person> _persons;
         private readonly ICountriesService _countriesService;
 
-        public PersonsService()
+        public PersonsService(bool initialize = true)
         {
             _persons = new List<Person>();
             _countriesService = new CountriesService();
+            if (initialize)
+            {
+                _persons.AddRange(new List<Person>() { 
+                    new Person() {PersonID = Guid.Parse("CEA7610A-8D2D-4867-B2E6-D863BD41C5B3"), PersonName = "Imon Islam", Address = "Ctg", Email = "imon@email.com", CountryID = Guid.Parse("6AF61BFD-D839-400C-91DC-F4DC231F420E"), Gender = "Male", DateOfBirth = DateTime.Parse("1990-01-05"), ReceiveNewsLetters = true},
+
+                    new Person() {PersonID = Guid.Parse("13F73876-AE6A-4530-9482-DBE272F66300"), PersonName = "John Doe", Address = "Era Island", Email = "john@email.com", CountryID = Guid.Parse("18C77678-FB49-447D-9DC0-42442DADD11A"), Gender = "Male", DateOfBirth = DateTime.Parse("1995-05-05"), ReceiveNewsLetters = true},
+
+                    new Person() {PersonID = Guid.Parse("26DE0B87-C73A-4422-B458-518E02476E91"), PersonName = "Shem Tov", Address = "Northern America", Email = "shem@email.com", CountryID = Guid.Parse("6AF61BFD-D839-400C-91DC-F4DC231F420E"), Gender = "Female", DateOfBirth = DateTime.Parse("2000-07-01"), ReceiveNewsLetters = false},
+
+                    new Person() {PersonID = Guid.Parse("A397C3C5-A7AE-4AFB-AFC3-6F36C3D262AD"), PersonName = "Main Uddin", Address = "Feni", Email = "main@email.com", CountryID = Guid.Parse("FAFF4812-127B-45C2-9B77-E3972F61D434"), Gender = "Male", DateOfBirth = DateTime.Parse("1999-03-09"), ReceiveNewsLetters = true},
+
+                    new Person() {PersonID = Guid.Parse("04AF0A9D-08F4-4542-9D32-2829DF05EE51"), PersonName = "Christopher", Address = "Era Island", Email = "ch@email.com", CountryID = Guid.Parse("18C77678-FB49-447D-9DC0-42442DADD11A"), Gender = "Male", DateOfBirth = DateTime.Parse("1988-09-01"), ReceiveNewsLetters = true},
+
+                    new Person() {PersonID = Guid.Parse("5B89D3F5-37B4-452C-8230-4E1DB9A9E810"), PersonName = "Lowand", Address = "Saudi Arabia", Email = "lowand@email.com", CountryID = Guid.Parse("6AF61BFD-D839-400C-91DC-F4DC231F420E"), Gender = "Female", DateOfBirth = DateTime.Parse("2003-04-02"), ReceiveNewsLetters = false},
+
+                    new Person() {PersonID = Guid.Parse("AF4A1979-BABF-4696-9199-F19F7D8C4D87"), PersonName = "Chan Soe", Address = "Era Island", Email = "chan@email.com", CountryID = Guid.Parse("18C77678-FB49-447D-9DC0-42442DADD11A"), Gender = "Male", DateOfBirth = DateTime.Parse("1995-05-05"), ReceiveNewsLetters = true},
+
+                    new Person() {PersonID = Guid.Parse("7B85C697-787F-4D29-96BB-45370B0A7361"), PersonName = "Shein Loe", Address = "Northern America", Email = "Shein@email.com", CountryID = Guid.Parse("6AF61BFD-D839-400C-91DC-F4DC231F420E"), Gender = "Female", DateOfBirth = DateTime.Parse("2000-07-01"), ReceiveNewsLetters = false},
+
+                    new Person() {PersonID = Guid.Parse("8D71340A-318C-4E5D-A777-9808135A8E59"), PersonName = "Zain Lee", Address = "Zaniaba", Email = "zain@email.com", CountryID = Guid.Parse("FAFF4812-127B-45C2-9B77-E3972F61D434"), Gender = "Female", DateOfBirth = DateTime.Parse("1997-03-09"), ReceiveNewsLetters = true},
+
+                    new Person() {PersonID = Guid.Parse("C381EBE7-BB0A-4D5B-A706-C0C5E2E3C943"), PersonName = "Christopher Losen", Address = "Era Island", Email = "chrr@email.com", CountryID = Guid.Parse("18C77678-FB49-447D-9DC0-42442DADD11A"), Gender = "Female", DateOfBirth = DateTime.Parse("1989-09-01"), ReceiveNewsLetters = true}
+                });
+            }
         }
 
         private PersonResponse ConvertPersonToPersonResponse(Person person)
