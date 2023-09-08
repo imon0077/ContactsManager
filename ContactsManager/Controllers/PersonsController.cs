@@ -17,9 +17,21 @@ namespace ContactsManager.Controllers
 
         [Route("persons/index")]
         [Route("/")]
-        public IActionResult Index()
+        public IActionResult Index(string? searchBy, string? searchString)
         {
-            List<PersonResponse> persons = _personsService.GetAllPersons();
+            ViewBag.SearchFields = new Dictionary<string, string>()
+            {
+                { nameof(PersonResponse.PersonName), "Person Name" },
+                { nameof(PersonResponse.Email), "Email" },
+                { nameof(PersonResponse.DateOfBirth), "Date Of Birth" },
+                { nameof(PersonResponse.Gender), "Gender" },
+                { nameof(PersonResponse.CountryID), "Country" },
+                { nameof(PersonResponse.Address), "Address" }
+            };
+            List<PersonResponse> persons = _personsService.GetFilteredPersons(searchBy, searchString);
+
+            ViewBag.CurrentSearchBy = searchBy;
+            ViewBag.CurrentSearchString = searchString;
             return View(persons);
         }
     }
