@@ -431,5 +431,38 @@ namespace ContactsManagerTests
         }
 
         #endregion UpdatePerson
+
+        #region DeletePerson
+
+        //if you supply valid PersonID then it should return true
+        [Fact]
+        public void DeletePerson_ValidPersonID()
+        {
+            //Arrange
+            CountryAddRequest countryAddRequest = new CountryAddRequest() { CountryName = "USA" };
+            CountryResponse countryResponse = _countriesService.AddCountry(countryAddRequest);
+
+            PersonAddRequest personAddRequest = new PersonAddRequest() { PersonName = "Imon", Address = "CTG", CountryID = countryResponse.CountryID, Email = "imon@email.com", DateOfBirth = Convert.ToDateTime("2010-02-02"), Gender = GenderOptions.Male, ReceiveNewsLetters = true };
+            PersonResponse personResponse = _personsService.AddPerson(personAddRequest);
+
+            //Act
+            bool isDeleted = _personsService.DeletePerson(personResponse.PersonID);
+
+            //Assert
+            Assert.True(isDeleted);
+        }
+
+        //if you supply invalid PersonID then it should return false
+        [Fact]
+        public void DeletePerson_InvalidPersonID()
+        {
+            //Act
+            bool isDeleted = _personsService.DeletePerson(Guid.NewGuid());
+
+            //Assert
+            Assert.False(isDeleted);
+        }
+
+        #endregion
     }
 }
