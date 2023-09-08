@@ -169,7 +169,30 @@ namespace Services
 
         public PersonResponse UpdatePerson(PersonUpdateRequest? personUpdateRequest)
         {
-            throw new NotImplementedException();
+            //check if object is null
+            if (personUpdateRequest == null)
+                throw new ArgumentNullException(nameof(personUpdateRequest));
+
+            //Model Validation
+            ValidationHelper.ModelValidation(personUpdateRequest);
+
+            //Get matching person object to update
+            Person? matchingPerson = _persons.FirstOrDefault(temp => temp.PersonID == personUpdateRequest.PersonID);
+            if(matchingPerson == null)
+            {
+                throw new ArgumentException("Given PersonID is invalid");
+            }
+
+            //Update all details
+            matchingPerson.PersonName = personUpdateRequest.PersonName;
+            matchingPerson.Email = personUpdateRequest.Email;
+            matchingPerson.DateOfBirth = personUpdateRequest.DateOfBirth;
+            matchingPerson.Gender = personUpdateRequest.Gender.ToString();
+            matchingPerson.CountryID = personUpdateRequest.CountryID;
+            matchingPerson.Address = personUpdateRequest.Address;
+            matchingPerson.ReceiveNewsLetters = personUpdateRequest.ReceiveNewsLetters;
+
+            return matchingPerson.ToPersonResponse();
         }
     }
 }

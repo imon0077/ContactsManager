@@ -391,7 +391,7 @@ namespace ContactsManagerTests
             CountryAddRequest countryAddRequest = new CountryAddRequest() { CountryName = "UK" };
             CountryResponse countryResponse = _countriesService.AddCountry(countryAddRequest);
 
-            PersonAddRequest personAddRequest = new PersonAddRequest() { PersonName = "John", CountryID = countryResponse.CountryID, Gender = GenderOptions.Male };
+            PersonAddRequest personAddRequest = new PersonAddRequest() { PersonName = "John", CountryID = countryResponse.CountryID, Gender = GenderOptions.Male, Email = "john@email.com", Address = "ctg", ReceiveNewsLetters = true };
 
             PersonResponse personResponse_from_add = _personsService.AddPerson(personAddRequest);
 
