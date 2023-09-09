@@ -33,14 +33,46 @@
     <table class="table w-100 mt">
         <thead>
             <tr>
-                <th>Person Name</th>
-                <th>Email</th>
-                <th>Date of Birth</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Country</th>
-                <th>Address</th>
-                <th>Receive News Letters</th>
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                    {"ColumnName", nameof(PersonResponse.PersonName)},
+                    {"DisplayName", "Person Name"}
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                {"ColumnName", nameof(PersonResponse.Email)},
+                {"DisplayName", "Email"}
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                {"ColumnName", nameof(PersonResponse.DateOfBirth)},
+                {"DisplayName", "Date of Birth"}
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                {"ColumnName", nameof(PersonResponse.Age)},
+                {"DisplayName", "Age"}
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                {"ColumnName", nameof(PersonResponse.Gender)},
+                {"DisplayName", "Gender"}
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                {"ColumnName", nameof(PersonResponse.Country)},
+                {"DisplayName", "Country"}
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                {"ColumnName", nameof(PersonResponse.Address)},
+                {"DisplayName", "Address"}
+                })
+
+                @await Html.PartialAsync("_GridColumnHeader", new ViewDataDictionary(ViewData){
+                {"ColumnName", nameof(PersonResponse.ReceiveNewsLetters)},
+                {"DisplayName", "Receive News Letters"}
+                })
+              
             </tr>
         </thead>
         <tbody>
