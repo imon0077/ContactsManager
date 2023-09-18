@@ -14,20 +14,20 @@ namespace ServiceContracts
         /// </summary>
         /// <param name="personAddRequest">Person to add</param>
         /// <returns>Return same person details along with newly generated PersonID</returns>
-        PersonResponse AddPerson(PersonAddRequest? personAddRequest);
+        Task<PersonResponse> AddPerson(PersonAddRequest? personAddRequest);
 
         /// <summary>
         /// Return all persons
         /// </summary>
         /// <returns>Return a list of objects of PersonResponse type</returns>
-        List<PersonResponse> GetAllPersons();
+        Task<List<PersonResponse>> GetAllPersons();
 
         /// <summary>
         /// Return the Person object based on given person id
         /// </summary>
         /// <param name="PersonID">Person Id to search</param>
         /// <returns>Return matching Person object</returns>
-        PersonResponse? GetPersonByPersonID(Guid? PersonID);
+        Task<PersonResponse?> GetPersonByPersonID(Guid? PersonID);
 
         /// <summary>
         /// Return all persons object that matches with the searchBy & searchString
@@ -35,22 +35,22 @@ namespace ServiceContracts
         /// <param name="searchBy">Field to search</param>
         /// <param name="searchString">string to search</param>
         /// <returns>Return all matching persons </returns>
-        List<PersonResponse> GetFilteredPersons(string? searchBy, string? searchString);
+        Task<List<PersonResponse>> GetFilteredPersons(string? searchBy, string? searchString);
 
-        List<PersonResponse> GetSortedPersons(List<PersonResponse> allPersons, string sortBy, SortOrderOptions sortOrder);
+        Task<List<PersonResponse>> GetSortedPersons(List<PersonResponse> allPersons, string sortBy, SortOrderOptions sortOrder);
 
         /// <summary>
         /// Update a person based on update person request along with PersonID
         /// </summary>
         /// <param name="personUpdateRequest">person details including PersonID to update</param>
         /// <returns>returns the same person response object after update</returns>
-        PersonResponse UpdatePerson(PersonUpdateRequest? personUpdateRequest);
+        Task<PersonResponse> UpdatePerson(PersonUpdateRequest? personUpdateRequest);
 
         /// <summary>
         /// Deletes a person based on PersonID
         /// </summary>
         /// <param name="PersonID">PersonID to delete</param>
         /// <returns>true, if the deletion is successful; otherwise false</returns>
-        bool DeletePerson(Guid? PersonID);
+        Task<bool> DeletePerson(Guid? PersonID);
     }
 }
