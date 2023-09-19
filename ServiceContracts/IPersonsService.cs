@@ -52,5 +52,11 @@ namespace ServiceContracts
         /// <param name="PersonID">PersonID to delete</param>
         /// <returns>true, if the deletion is successful; otherwise false</returns>
         Task<bool> DeletePerson(Guid? PersonID);
+
+        /// <summary>
+        /// Return persons as CSV
+        /// </summary>
+        /// <returns>Return the memory stream with CSV data</returns>
+        Task<MemoryStream> GetPersonsCSV();
     }
 }
