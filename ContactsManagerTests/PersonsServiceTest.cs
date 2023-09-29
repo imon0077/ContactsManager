@@ -10,6 +10,8 @@ using AutoFixture;
 using Moq;
 using RepositoryContracts;
 using System.Linq.Expressions;
+using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace ContactsManagerTests
 {
@@ -27,8 +29,10 @@ namespace ContactsManagerTests
             _fixture = new Fixture();
             _personsRepositoryMock = new Mock<IPersonsRepository>();
             _personsRepository = _personsRepositoryMock.Object;
+            var diagnosticContextMock = new Mock<IDiagnosticContext>();
+            var loggerMock = new Mock<ILogger<PersonsService>>();
 
-            _personsService = new PersonsService(_personsRepository);
+            _personsService = new PersonsService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
             
             _testOutputHelper = testOutputHelper;
         }
